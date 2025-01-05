@@ -29,7 +29,7 @@ const Footer = () => {
         <span className='my-1 text-sm hover:underline'>Alka Singh</span>
         <span className='my-1 text-sm hover:underline'>Anshika Pandey</span>
         <span className='my-1 text-sm hover:underline'>Piyush Kumar Jaiswal</span>
-        <span className='my-1 text-sm hover:underline'>Avansih Shukla</span>
+        <span className='my-1 text-sm hover:underline'>Avanish Shukla</span>
         <span className='my-1 text-sm hover:underline'>Anubhav Dubey</span>
       </div>
     </div>

@@ -7,7 +7,7 @@ const Sponsers = () => {
   const [SponserData, setSponserData] = useState([]);
 
   useEffect(()=>{
-    axios.get('/api/v3/bank/user/loan')
+    axios.get('/api/v3/bank/loan')
     .then((res)=>{
       const scholarshipsArray = res.data.loans;
       if(Array.isArray(scholarshipsArray)){

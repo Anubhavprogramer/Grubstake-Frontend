@@ -1,6 +1,7 @@
 import React from "react";
 import HomeInfo from "./HomeInfo";
 import HomeSvg from "./HomeSvg";
+import { useNavigate } from "react-router-dom";
 
 const heroText = [
   "Empowering Your Financial Future, One Innovation at a Time.",
@@ -48,6 +49,18 @@ const featured = [
 ];
 
 const Home = () => {
+  const navigate = useNavigate();
+  const isLoggedIn = Boolean(localStorage.getItem('token'));
+
+  const handleFeaturedClick = (idx) => {
+    if (!isLoggedIn) {
+      navigate('/login');
+      return;
+    }
+    if (idx === 0) navigate('/GovScol');
+    else if (idx === 1) navigate('/Loans');
+  };
+
   return (
     <div className="min-h-screen w-full bg-gradient-to-br from-blue-50 via-blue-100 to-blue-200 flex flex-col items-center">
       {/* Hero Section */}
@@ -81,7 +94,12 @@ const Home = () => {
               <span className="text-xs px-3 py-1 bg-blue-900 text-white rounded-full mb-2 font-semibold">{item.type}</span>
               <h3 className="text-xl font-bold text-blue-900 mb-1">{item.title}</h3>
               <p className="text-blue-800 text-base mb-2">{item.desc}</p>
-              <button className="mt-auto px-4 py-2 bg-blue-900 text-white rounded-full hover:bg-blue-700 transition">Learn More</button>
+              <button
+                className="mt-auto px-4 py-2 bg-blue-900 text-white rounded-full hover:bg-blue-700 transition"
+                onClick={() => handleFeaturedClick(idx)}
+              >
+                Learn More
+              </button>
             </div>
           ))}
         </div>

@@ -4,11 +4,11 @@ import Card from './Card';
 
 const CardContainer = ({ Data = [] }) => {
   if (!Data || !Array.isArray(Data)) {
-    return <div>No sponsors available</div>;
+    return <div className="text-center text-blue-900 font-semibold py-8">No sponsors available</div>;
   }
 
   return (
-    <div className='h-fit justify-center w-screen p-10 flex gap-10 flex-wrap'>
+    <div className='w-full max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 py-6 px-2'>
       {Data.map((sponsor, index) => (
         <Card
           key={index}

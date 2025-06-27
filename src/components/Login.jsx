@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
+import LoadingScreen from './LoadingScreen.jsx';
 
 const Login = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   });
-
   const [error, setError] = useState('');
-  const navigate = useNavigate();  // Use useNavigate for navigation
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -21,22 +22,18 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setLoading(true);
     try {
       const response = await axios.post('/api/v2/user/login', {
-        email: formData.email,  
+        email: formData.email,
         password: formData.password
-      });
-      
-      // Optionally store token in localStorage or handle response
-      // console.log('Token:', response.data.token);
+      }, { withCredentials: true });
       localStorage.setItem('token', response.data.token);
-      // console.log('Token stored in localStorage:', localStorage.getItem('token'));
-
-      // Redirect to home or another page
-      navigate('/');  // Use navigate for redirection
+      setLoading(false);
+      navigate('/');
     } catch (error) {
       setError(error.response ? error.response.data.message : 'An error occurred');
+      setLoading(false);
     }
   };
 
@@ -58,14 +55,13 @@ const Login = () => {
       const timer = setTimeout(() => {
         setError('');
       }, 2000);
-      
-      // Clean up the timeout if the component unmounts or error changes
       return () => clearTimeout(timer);
     }
   }, [error]);
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-blue-900">
+      {loading && <LoadingScreen />}
       <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-xl shadow-lg">
         <h2 className="text-2xl font-bold text-center text-blue-900">Login</h2>
         {error && (
@@ -123,7 +119,7 @@ const Login = () => {
               type="submit"
               className="w-full px-4 py-2 text-sm font-medium text-white bg-blue-900 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
             >
-              Sign in
+              {loading ? 'Signing In...' : 'Sign in'}
             </button>
           </div>
           <div className="text-sm text-center text-blue-900">

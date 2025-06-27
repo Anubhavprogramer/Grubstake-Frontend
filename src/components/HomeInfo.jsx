@@ -2,24 +2,26 @@ import React from "react";
 
 const HomeInfo = ({ text, heading }) => {
   return (
-    <>
-      {text.map((t, index) => (
-        <div
-          key={index} // Add the key prop here
-          className="w-full h-fit lg:h-[90vh] flex-col flex justify-start xl:justify-center items-center px-5 md:px-10 lg:px-20"
-        >
-          <span className="text-3xl md:text-5xl justify-start my-9 font-bold text-Grubstake font-[Lexend] hover:underline ">
-            {heading[index]}
-          </span>
-          <span className="font- text-3xl md:text-4xl lg:5xl xl:6xl text-Grubstake font-[Lexend]">
-            {t}
-          </span>
-          <button className="my-20 text-xl md:text-2xl lg:text-4xl px-5 py-3 text-white bg-gradient-to-b from-slate-200 bg-Grubstake rounded-full lg:w-[300px] flex justify-center items-center lg:h-16 font-regular font-[Kodchasan]">
-            More Info
-          </button>
-        </div>
-      ))}
-    </>
+    <div className="w-full flex flex-col items-start justify-center py-8">
+      <span className="text-4xl md:text-6xl font-extrabold text-blue-900 font-[Kodchasan] mb-4 drop-shadow-lg">
+        {heading[0]}
+      </span>
+      <span className="text-xl md:text-2xl text-blue-800 font-[Lexend] mb-6">
+        {text[0]}
+      </span>
+      <a href="#how-it-works" className="inline-block px-8 py-3 bg-blue-900 text-white rounded-full text-lg font-semibold shadow-lg hover:bg-blue-700 transition mb-8">
+        Get Started
+      </a>
+      {/* Optionally show more info cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+        {[1, 2, 3].map((i) => (
+          <div key={i} className="bg-white bg-opacity-80 rounded-xl shadow p-4 flex flex-col mb-2">
+            <span className="text-lg font-bold text-blue-800 mb-1">{heading[i]}</span>
+            <span className="text-blue-700 text-base">{text[i]}</span>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 };
 

@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import LoadingScreen from './LoadingScreen.jsx';
 
 const Logout = () => {
   const navigate = useNavigate();
@@ -11,17 +12,20 @@ const Logout = () => {
 
     // Make the API call to the server to log out the user
     axios.post('/api/v2/user/logout')
-      .then((response) => {
-        // Optionally handle server response or errors here
-        navigate('/login');  // Redirect to the login page after successful logout
+      .then(() => {
+        setTimeout(() => navigate('/login'), 1000);
       })
-      .catch((error) => {
-        console.error('Logout error:', error);
-        navigate('/login');  // Redirect to the login page even if there's an error
+      .catch(() => {
+        setTimeout(() => navigate('/login'), 1000);
       });
   }, [navigate]);
 
-  return <div>Logging out...</div>;
+  return (
+    <div className="flex items-center justify-center min-h-screen bg-blue-900">
+      <LoadingScreen />
+      <span className="absolute text-white text-lg font-semibold mt-32">Logging out...</span>
+    </div>
+  );
 };
 
 export default Logout;

@@ -6,7 +6,7 @@ import axios from "axios";
 
 const NavLink = ({ to, text, onClick }) => {
   return (
-    <Link to={to} onClick={onClick} className="text-black text-lg md:p-2 font-semibold">
+    <Link to={to} onClick={onClick} className="text-blue-900 text-lg font-semibold md:p-2 font-[Kodchasan] hover:text-blue-700 transition-colors">
       {text}
     </Link>
   );
@@ -14,13 +14,13 @@ const NavLink = ({ to, text, onClick }) => {
 
 const NavButton = ({ to, text, onClick }) => {
   return (
-    <Link to={to} onClick={onClick} className="text-white text-lg md:p-2 rounded-full font-semibold bg-Grubstake m-1">
+    <Link to={to} onClick={onClick} className="text-white text-lg rounded-full font-semibold bg-blue-700 px-6 py-2 m-1 shadow hover:bg-blue-900 transition-all font-[Kodchasan]">
       {text}
     </Link>
   );
 };
 
-const NavElem = () => {
+const NavElem = ({ mobileLeft }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [role, setRole] = useState("user");
   const token = localStorage.getItem("token");
@@ -50,7 +50,40 @@ const NavElem = () => {
   };
 
   return (
-    <div className="p-3 w-0 md:w-fit">
+    <div className={mobileLeft ? "p-0 md:p-3 w-0 md:w-fit" : "p-3 w-0 md:w-fit"}>
+      {/* Hamburger for mobile on the left */}
+      <div className={mobileLeft ? "md:hidden flex flex-col justify-center" : "md:hidden flex flex-col justify-center"}>
+        <button
+          className="z-50 flex items-center justify-center w-10 h-10 rounded-full border-2 border-blue-300 bg-white shadow focus:outline-none focus:ring-2 focus:ring-blue-400"
+          style={{ marginTop: '0.5rem' }}
+          onClick={toggleNavbar}
+        >
+          {isOpen ? <CloseIcon fontSize="medium" className="text-blue-900" /> : <MenuIcon fontSize="medium" className="text-blue-900" />}
+        </button>
+        {isOpen && (
+          <>
+            {/* Overlay */}
+            <div className="fixed inset-0 bg-blue-900 bg-opacity-60 z-40 animate-fadeIn" onClick={toggleNavbar}></div>
+            {/* Menu Card */}
+            <div className="fixed left-1/2 top-1/2 z-50 -translate-x-1/2 -translate-y-1/2 w-[90vw] max-w-xs bg-white rounded-2xl shadow-2xl flex flex-col items-center py-10 px-6 gap-6 border-2 border-blue-200 animate-fadeIn">
+              <NavLink to="/" text="Home" onClick={handleLinkClick} />
+              {role === "user" && <NavLink to="/GovScol" text="GovScol" onClick={handleLinkClick} />}
+              {role === "user" && <NavLink to="/PriScol" text="PriScol" onClick={handleLinkClick} />}
+              <NavLink to="/Loans" text="Loans" onClick={handleLinkClick} />
+              {role === "Bank" && <NavLink to="/NewLoan" text="New Loans" onClick={handleLinkClick} />}
+              {token ? (
+                <NavButton to="/logout" text="Logout" onClick={handleLinkClick} />
+              ) : (
+                <>
+                  <NavButton to="/SignUp" text="SignUp" onClick={handleLinkClick} />
+                  <NavButton to="/Login" text="Login" onClick={handleLinkClick} />
+                </>
+              )}
+            </div>
+          </>
+        )}
+      </div>
+      {/* Desktop navigation */}
       <div className="hidden md:flex justify-between">
         <NavLink to="/" text="Home" />
         {role === "user" && <NavLink to="/GovScol" text="GovScol" />}
@@ -67,28 +100,16 @@ const NavElem = () => {
           </>
         )}
       </div>
-      <div className="md:hidden flex flex-col  justify-center">
-        <button className="z-50" onClick={toggleNavbar}>
-          {isOpen ? <CloseIcon /> : <MenuIcon />}
-        </button>
-        {isOpen && (
-          <div className="flex flex-col absolute top-16 h-full left-0 gap-10 bg-Grubstake justify-center items-center w-full">
-            <NavLink to="/" text="Home" onClick={handleLinkClick} />
-            {role === "user" && <NavLink to="/GovScol" text="GovScol" onClick={handleLinkClick} />}
-            {role === "user" && <NavLink to="/PriScol" text="PriScol" onClick={handleLinkClick} />}
-            {role === "Bank" && <NavLink to="/Loans" text="Loans" onClick={handleLinkClick} />}
-            {role === "Bank" && <NavLink to="/NewLoan" text="New Loans" onClick={handleLinkClick} />}
-            {token ? (
-              <NavButton to="/logout" text="Logout" onClick={handleLinkClick} />
-            ) : (
-              <>
-                <NavButton to="/SignUp" text="SignUp" onClick={handleLinkClick} />
-                <NavButton to="/Login" text="Login" onClick={handleLinkClick} />
-              </>
-            )}
-          </div>
-        )}
-      </div>
+      {/* Fade-in animation */}
+      <style>{`
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        .animate-fadeIn {
+          animation: fadeIn 0.2s ease;
+        }
+      `}</style>
     </div>
   );
 };

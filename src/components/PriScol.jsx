@@ -23,16 +23,17 @@ const PriScol = () => {
     .catch((err)=>{
       console.error("Error fetching data:", err);
     })
-  })
+  },[])
 
   return (
-    <div className='w-screen h-fit'>
-      <div className='w-full flex justify-center text-center ' >
-        <h1 className='text-3xl md:text-7xl font-bold font-[kodchasan] text-Grubstake'>Private Scholarships</h1>
+    <div className='w-full min-h-screen bg-gradient-to-br from-blue-50 via-blue-100 to-blue-200 py-8'>
+      <div className='w-full flex justify-center text-center mb-6'>
+        <h1 className='text-4xl md:text-6xl font-bold font-[Kodchasan] text-blue-900 drop-shadow-lg'>Private Scholarships</h1>
       </div>
-      <Filter/>
+      <div className="max-w-5xl mx-auto mb-8">
+        <Filter/>
+      </div>
       <CardContainer Data={sponserData}/>
-
     </div>
   )
 }

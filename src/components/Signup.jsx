@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Link,useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import LoadingScreen from './LoadingScreen.jsx';
 
 const SignUp = () => {
   const [TermsChecked, setTermsChecked] = useState(false);
@@ -8,10 +9,11 @@ const SignUp = () => {
     username: '',
     email: '',
     password: '',
-    role: '', 
+    role: '',
   });
 
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -28,43 +30,41 @@ const SignUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formDataToSend = new FormData();
-    formDataToSend.append('username', formData.username);
-    formDataToSend.append('email', formData.email);
-    formDataToSend.append('password', formData.password);
-    formDataToSend.append('role', formData.role); // Append role to formData
-    
-    // for (let [key, value] of formDataToSend.entries()) {
-    //   console.log(`${key}: ${value}`);
-    // }
-
+    setLoading(true);
     try {
-      await axios.post('/api/v2/user/register', {
+      const response = await axios.post('/api/v2/user/register', {
         username: formData.username,
         email: formData.email,
-        password: formData.password,  
+        password: formData.password,
         role: formData.role
+      }, {
+        withCredentials: true
       });
-      // Redirect to login or another page
-      navigate('/')
+      // Store token in localStorage for authentication
+      localStorage.setItem('token', response.data.token);
+      setLoading(false);
+      // Redirect to home
+      navigate('/');
     } catch (error) {
-      setError(error.response ? error.response.data.message : '');
+      setError(error.response ? error.response.data.message : 'An error occurred');
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    if (error){
-      const timer = setTimeout(()=>{
+    if (error) {
+      const timer = setTimeout(() => {
         setError('');
-      },2000);
+      }, 2000);
       return () => clearTimeout(timer);
     }
   }, [error]);
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-blue-900">
+      {loading && <LoadingScreen />}
       <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-xl shadow-lg">
-        <h2 className="text-2xl font-bold text-center text-blue-900">Sign Up</h2>
+        <h2 className="text-2xl font-bold text-center text-blue-900 font-[Kodchasan]">Sign Up</h2>
         {error && <p className='text-red-400 mb-4 text-center'>{error}</p>}
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
@@ -78,6 +78,7 @@ const SignUp = () => {
               value={formData.username}
               onChange={handleChange}
               required
+              autoComplete="username"
               className="w-full px-4 py-2 mt-1 text-blue-900 bg-white border border-blue-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
@@ -92,6 +93,7 @@ const SignUp = () => {
               value={formData.email}
               onChange={handleChange}
               required
+              autoComplete="email"
               className="w-full px-4 py-2 mt-1 text-blue-900 bg-white border border-blue-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
@@ -106,6 +108,7 @@ const SignUp = () => {
               value={formData.password}
               onChange={handleChange}
               required
+              autoComplete="new-password"
               className="w-full px-4 py-2 mt-1 text-blue-900 bg-white border border-blue-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
@@ -134,21 +137,21 @@ const SignUp = () => {
                 type="checkbox"
                 className="w-4 h-4 text-blue-900 border-blue-300 rounded focus:ring-blue-500"
                 required
-                onChange={handleCheck} // Moved onChange to input element
+                checked={TermsChecked}
+                onChange={handleCheck}
               />
               <label htmlFor="terms" className="block ml-2 text-sm text-blue-900">
-                I agree to the <a href="#" className="underline">Terms and Conditions</a>
+                I agree to the <button type="button" className="underline text-blue-900 hover:text-blue-700 focus:outline-none" onClick={() => alert('Show Terms and Conditions modal here')}>Terms and Conditions</button>
               </label>
             </div>
           </div>
           <div>
             <button
               type="submit"
-              onClick={handleSubmit} // Removed the onClick from the button
-              disabled={!TermsChecked} // Corrected the logic to disable when TermsChecked is false
-              className="w-full px-4 py-2 text-sm font-medium text-white bg-blue-900 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              disabled={!TermsChecked || loading}
+              className={`w-full px-4 py-2 text-sm font-medium text-white rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${!TermsChecked || loading ? 'bg-blue-300 cursor-not-allowed' : 'bg-blue-900 hover:bg-blue-700'}`}
             >
-              Sign Up
+              {loading ? 'Signing Up...' : 'Sign Up'}
             </button>
           </div>
           <div className="text-sm text-center text-blue-900">

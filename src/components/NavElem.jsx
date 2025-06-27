@@ -67,10 +67,11 @@ const NavElem = ({ mobileLeft }) => {
             {/* Menu Card */}
             <div className="fixed left-1/2 top-1/2 z-50 -translate-x-1/2 -translate-y-1/2 w-[90vw] max-w-xs bg-white rounded-2xl shadow-2xl flex flex-col items-center py-10 px-6 gap-6 border-2 border-blue-200 animate-fadeIn">
               <NavLink to="/" text="Home" onClick={handleLinkClick} />
-              {role === "user" && <NavLink to="/GovScol" text="GovScol" onClick={handleLinkClick} />}
-              {role === "user" && <NavLink to="/PriScol" text="PriScol" onClick={handleLinkClick} />}
-              <NavLink to="/Loans" text="Loans" onClick={handleLinkClick} />
-              {role === "Bank" && <NavLink to="/NewLoan" text="New Loans" onClick={handleLinkClick} />}
+              {role === "Admin" && <NavLink to="/admin" text="Admin Dashboard" onClick={handleLinkClick} />}
+              {role !== "Admin" && role === "user" && <NavLink to="/GovScol" text="GovScol" onClick={handleLinkClick} />}
+              {role !== "Admin" && role === "user" && <NavLink to="/PriScol" text="PriScol" onClick={handleLinkClick} />}
+              {role !== "Admin" && <NavLink to="/Loans" text="Loans" onClick={handleLinkClick} />}
+              {role !== "Admin" && role === "Bank" && <NavLink to="/NewLoan" text="New Loans" onClick={handleLinkClick} />}
               {token ? (
                 <NavButton to="/logout" text="Logout" onClick={handleLinkClick} />
               ) : (
@@ -86,10 +87,11 @@ const NavElem = ({ mobileLeft }) => {
       {/* Desktop navigation */}
       <div className="hidden md:flex justify-between">
         <NavLink to="/" text="Home" />
-        {role === "user" && <NavLink to="/GovScol" text="GovScol" />}
-        {role === "user" && <NavLink to="/PriScol" text="PriScol" />}
-        <NavLink to="/Loans" text="Loans" />
-        {role === "Bank" && <NavLink to="/NewLoan" text="New Loans" />}
+        {role === "Admin" && <NavLink to="/admin" text="Admin Dashboard" />}
+        {role !== "Admin" && role === "user" && <NavLink to="/GovScol" text="GovScol" />}
+        {role !== "Admin" && role === "user" && <NavLink to="/PriScol" text="PriScol" />}
+        {role !== "Admin" && <NavLink to="/Loans" text="Loans" />}
+        {role !== "Admin" && role === "Bank" && <NavLink to="/NewLoan" text="New Loans" />}
         
         {token ? (
           <NavButton to="/logout" text="Logout" />

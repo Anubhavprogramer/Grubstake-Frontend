@@ -125,8 +125,9 @@ const SignUp = () => {
               className="w-full px-4 py-2 mt-1 text-blue-900 bg-white border border-blue-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
             >
               <option value="">Select a role</option>
-              <option value="user">User</option>
+              <option value="User">User</option>
               <option value="Bank">Bank</option>
+              <option value="Admin">Admin</option>
             </select>
           </div>
           <div className="flex items-center justify-between">

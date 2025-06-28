@@ -11,7 +11,9 @@ const Header = () => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
-      axios.get(BACKEND_URL + 'api/v2/user/me', { withCredentials: true })
+      axios.get(BACKEND_URL + 'api/v2/user/me', {
+        headers: { Authorization: `Bearer ${token}` }
+      })
         .then(res => {
           setIsAdmin(res.data.user.role === "Admin");
         })

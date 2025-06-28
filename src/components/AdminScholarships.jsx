@@ -13,7 +13,10 @@ const AdminScholarships = () => {
     const fetchScholarships = async () => {
       setLoading(true);
       try {
-        const res = await axios.get(BACKEND_URL + 'api/v1/Admin/scholarships', { withCredentials: true });
+        const token = localStorage.getItem('token');
+        const res = await axios.get(BACKEND_URL + 'api/v1/Admin/scholarships', {
+          headers: { Authorization: `Bearer ${token}` }
+        });
         setScholarships(res.data.scholarship || []);
       } catch (err) {
         setError('Failed to fetch scholarships');

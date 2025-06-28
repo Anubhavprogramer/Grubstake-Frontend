@@ -104,22 +104,22 @@ const NavElem = ({ mobileLeft }) => {
         {isOpen && (
           <div className="fixed inset-0 bg-blue-900 bg-opacity-80 z-40 flex flex-col items-center justify-center animate-fadeIn">
             <div className="flex flex-col gap-6 items-center w-full max-w-xs p-8 bg-white rounded-2xl shadow-2xl border-2 border-blue-200">
-              <NavLink to="/" text="Home" onClick={handleLinkClick} />
-              {role === "Admin" && <NavLink to="/admin" text="Admin Dashboard" onClick={handleLinkClick} />}
-              {role === "user" && <NavLink to="/GovScol" text="GovScol" onClick={handleLinkClick} />}
-              {role === "user" && <NavLink to="/PriScol" text="PriScol" onClick={handleLinkClick} />}
-              <NavLink to="/Loans" text="Loans" onClick={handleLinkClick} />
-              {(role === "Bank" || role === "Admin") && <NavLink to="/NewLoan" text="New Loans" onClick={handleLinkClick} />}
-              {role === "Bank" && <NavLink to="/bank/dashboard" text="Bank Dashboard" onClick={handleLinkClick} />}
+              <Link to="/" onClick={handleLinkClick} className="text-blue-900 text-xl font-bold px-3 py-2 rounded hover:bg-blue-100 w-full text-center">Home</Link>
+              {role === "Admin" && <Link to="/admin" onClick={handleLinkClick} className="text-blue-900 text-xl font-bold px-3 py-2 rounded hover:bg-blue-100 w-full text-center">Admin Dashboard</Link>}
+              {role === "user" && <Link to="/GovScol" onClick={handleLinkClick} className="text-blue-900 text-xl font-bold px-3 py-2 rounded hover:bg-blue-100 w-full text-center">GovScol</Link>}
+              {role === "user" && <Link to="/PriScol" onClick={handleLinkClick} className="text-blue-900 text-xl font-bold px-3 py-2 rounded hover:bg-blue-100 w-full text-center">PriScol</Link>}
+              <Link to="/Loans" onClick={handleLinkClick} className="text-blue-900 text-xl font-bold px-3 py-2 rounded hover:bg-blue-100 w-full text-center">Loans</Link>
+              {(role === "Bank" || role === "Admin") && <Link to="/NewLoan" onClick={handleLinkClick} className="text-blue-900 text-xl font-bold px-3 py-2 rounded hover:bg-blue-100 w-full text-center">New Loans</Link>}
+              {role === "Bank" && <Link to="/bank/dashboard" onClick={handleLinkClick} className="text-blue-900 text-xl font-bold px-3 py-2 rounded hover:bg-blue-100 w-full text-center">Bank Dashboard</Link>}
               <div className="flex flex-col gap-2 w-full mt-4">
                 {(token || bankToken) ? (
-                  <NavButton to="/logout" text="Logout" onClick={handleLinkClick} />
+                  <Link to="/logout" onClick={handleLinkClick} className="bg-blue-700 text-white text-lg font-bold rounded-full px-6 py-3 w-full text-center shadow hover:bg-blue-900 transition-all">Logout</Link>
                 ) : (
                   <>
-                    <NavButton to="/SignUp" text="SignUp" onClick={handleLinkClick} />
-                    <NavButton to="/Login" text="Login" onClick={handleLinkClick} />
-                    <NavButton to="/bank/signup" text="Bank Signup" onClick={handleLinkClick} />
-                    <NavButton to="/bank/login" text="Bank Login" onClick={handleLinkClick} />
+                    <Link to="/SignUp" onClick={handleLinkClick} className="bg-blue-700 text-white text-lg font-bold rounded-full px-6 py-3 w-full text-center shadow hover:bg-blue-900 transition-all">SignUp</Link>
+                    <Link to="/Login" onClick={handleLinkClick} className="bg-blue-700 text-white text-lg font-bold rounded-full px-6 py-3 w-full text-center shadow hover:bg-blue-900 transition-all">Login</Link>
+                    <Link to="/bank/signup" onClick={handleLinkClick} className="bg-blue-700 text-white text-lg font-bold rounded-full px-6 py-3 w-full text-center shadow hover:bg-blue-900 transition-all">Bank Signup</Link>
+                    <Link to="/bank/login" onClick={handleLinkClick} className="bg-blue-700 text-white text-lg font-bold rounded-full px-6 py-3 w-full text-center shadow hover:bg-blue-900 transition-all">Bank Login</Link>
                   </>
                 )}
               </div>

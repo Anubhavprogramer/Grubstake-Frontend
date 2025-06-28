@@ -35,10 +35,13 @@ const AdminNewScholarship = () => {
     setError('');
     setSuccess('');
     try {
+      const token = localStorage.getItem('token');
       await axios.post(BACKEND_URL + 'api/v1/Admin/scholarships', {
         ...form,
         amount: Number(form.amount)
-      }, { withCredentials: true });
+      }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
       setSuccess('Scholarship created successfully!');
       setForm({
         name: '',

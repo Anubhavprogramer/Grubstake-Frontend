@@ -9,6 +9,7 @@ const Sponsers = () => {
   const [SponserData, setSponserData] = useState([]);
 
   useEffect(()=>{
+    // This route appears public, but if protected, add token logic here
     axios.get(BACKEND_URL + 'api/v3/bank/loan')
     .then((res)=>{
       const scholarshipsArray = res.data.loans;

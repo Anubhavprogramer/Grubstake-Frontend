@@ -74,9 +74,6 @@ const CreateLoan = () => {
         isActive: formData.isActive,
         avatar: formData.avatar,
       };
-      // Debug log
-      console.log('Sending loan creation request with token:', authToken);
-      console.log('Payload:', payload);
       await axios.post(BACKEND_URL + 'api/v3/bank/loan/create', payload, {
         headers: { Authorization: `Bearer ${authToken}` }
       });

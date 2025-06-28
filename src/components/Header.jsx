@@ -3,13 +3,15 @@ import NavElem from "./NavElem";
 import AdminNav from "./AdminNav";
 import axios from "axios";
 
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000';
+
 const Header = () => {
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
-      axios.get('/api/v2/user/me', { withCredentials: true })
+      axios.get(BACKEND_URL + '/api/v2/user/me', { withCredentials: true })
         .then(res => {
           setIsAdmin(res.data.user.role === "Admin");
         })
@@ -30,7 +32,7 @@ const Header = () => {
           <h1 className="text-2xl xl:text-4xl text-white font-bold tracking-wide drop-shadow-lg text-center md:text-left">
             Grubstake
           </h1>
-          <span className="text-sm xl:text-lg text-blue-200 font-light mt-1 md:mt-0 text-center md:text-left whitespace-nowrap">
+          <span className="block text-sm xl:text-lg text-blue-100 font-light mt-1 md:mt-0 text-center md:text-left whitespace-nowrap">
             Empowering Your Financial Future
           </span>
         </div>

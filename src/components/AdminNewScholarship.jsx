@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import LoadingScreen from './LoadingScreen.jsx';
 
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000';
+
 const AdminNewScholarship = () => {
   const [form, setForm] = useState({
     name: '',
@@ -33,7 +35,7 @@ const AdminNewScholarship = () => {
     setError('');
     setSuccess('');
     try {
-      await axios.post('/api/v1/Admin/scholarships', {
+      await axios.post(BACKEND_URL + '/api/v1/Admin/scholarships', {
         ...form,
         amount: Number(form.amount)
       }, { withCredentials: true });

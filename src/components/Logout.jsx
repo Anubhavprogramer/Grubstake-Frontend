@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import LoadingScreen from './LoadingScreen.jsx';
 
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000';
+
 const Logout = () => {
   const navigate = useNavigate();
 
@@ -11,7 +13,7 @@ const Logout = () => {
     localStorage.removeItem('token');
 
     // Make the API call to the server to log out the user
-    axios.post('/api/v2/user/logout')
+    axios.post(BACKEND_URL + '/api/v2/user/logout')
       .then(() => {
         setTimeout(() => navigate('/login'), 1000);
       })

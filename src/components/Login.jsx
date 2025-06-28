@@ -3,6 +3,8 @@ import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import LoadingScreen from './LoadingScreen.jsx';
 
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000';
+
 const Login = () => {
   const [formData, setFormData] = useState({
     email: '',
@@ -24,7 +26,7 @@ const Login = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await axios.post('/api/v2/user/login', {
+      const response = await axios.post(BACKEND_URL + '/api/v2/user/login', {
         email: formData.email,
         password: formData.password
       }, { withCredentials: true });
@@ -40,7 +42,7 @@ const Login = () => {
   const handleForgetPassword = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('/api/v2/user/forget-password', {
+      await axios.post(BACKEND_URL + '/api/v2/user/forget-password', {
         email: formData.email  // Use the actual value from the state
       });
       // Handle successful request or inform the user

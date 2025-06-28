@@ -3,11 +3,13 @@ import Filter from './Filter';
 import CardContainer from './CardContainer';
 import axios from 'axios';
 
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000';
+
 const GovScol = () => {
   const [sponserData, setSponserData] = useState([]);
 
   useEffect(() => {
-    axios.get('/api/v1/Schollerships')
+    axios.get(BACKEND_URL + '/api/v1/Schollerships')
       .then((res) => {
         // console.log("Response data:", res.data); // Log to check if data is received
         const scholarshipsArray = res.data.scholerships; // Access the scholarships array

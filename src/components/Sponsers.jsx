@@ -3,11 +3,13 @@ import Filter from './Filter'
 import CardContainer from './CardContainer'
 import axios from 'axios';
 
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000';
+
 const Sponsers = () => {
   const [SponserData, setSponserData] = useState([]);
 
   useEffect(()=>{
-    axios.get('/api/v3/bank/loan')
+    axios.get(BACKEND_URL + '/api/v3/bank/loan')
     .then((res)=>{
       const scholarshipsArray = res.data.loans;
       if(Array.isArray(scholarshipsArray)){

@@ -14,6 +14,9 @@ import AdminDashboard from './components/AdminDashboard.jsx';
 import AdminStatistics from './components/AdminStatistics.jsx';
 import AdminScholarships from './components/AdminScholarships.jsx';
 import AdminNewScholarship from './components/AdminNewScholarship.jsx';
+import BankSignup from './components/BankSignup.jsx';
+import BankLogin from './components/BankLogin.jsx';
+import BankDashboard from './components/BankDashboard.jsx';
 
 function App() {
   return (
@@ -23,6 +26,9 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/SignUp" element={<Signup />} />
         <Route path="/logout" element={<Logout />} />
+        <Route path="/bank/signup" element={<BankSignup />} />
+        <Route path="/bank/login" element={<BankLogin />} />
+        <Route path="/bank/dashboard" element={<BankDashboard />} />
 
         {/* Routes wrapped with MainLayout that include Header and Footer */}
         <Route element={<MainLayout />}>

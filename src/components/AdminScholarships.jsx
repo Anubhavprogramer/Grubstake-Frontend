@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import LoadingScreen from './LoadingScreen.jsx';
 
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000';
+
 const AdminScholarships = () => {
   const [scholarships, setScholarships] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -11,7 +13,7 @@ const AdminScholarships = () => {
     const fetchScholarships = async () => {
       setLoading(true);
       try {
-        const res = await axios.get('/api/v1/Admin/scholarships', { withCredentials: true });
+        const res = await axios.get(BACKEND_URL + '/api/v1/Admin/scholarships', { withCredentials: true });
         setScholarships(res.data.scholarship || []);
       } catch (err) {
         setError('Failed to fetch scholarships');

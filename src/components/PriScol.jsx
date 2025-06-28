@@ -3,11 +3,13 @@ import Filter from './Filter'
 import CardContainer from './CardContainer'
 import axios from 'axios'
 
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000';
+
 const PriScol = () => {
   const [sponserData, setSponserData] = useState([]);
 
   useEffect(()=>{
-    axios.get('/api/v1/Schollerships')
+    axios.get(BACKEND_URL + '/api/v1/Schollerships')
     .then((res)=>{
       // console.log("Response data:", res.data);
       const scholarshipsArray = res.data.scholerships;

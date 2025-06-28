@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000';
 
 const CreateLoan = () => {
   const [formData, setFormData] = useState({
@@ -9,31 +11,75 @@ const CreateLoan = () => {
     amount: '',
     eligibilityCriteria: '',
     interestRate: '',
-    provider: '',
     isActive: true,
     avatar: '',
-    Application_Starting: '',
-    Application_Closing: '',
   });
+  const [loading, setLoading] = useState(true);
+  const [authorized, setAuthorized] = useState(false);
+
+  useEffect(() => {
+    const bankToken = localStorage.getItem('bankToken');
+    const token = localStorage.getItem('token');
+    if (bankToken) {
+      setAuthorized(true);
+      setLoading(false);
+    } else if (token) {
+      // Check if user is admin
+      axios.get(BACKEND_URL + '/api/v2/user/me', {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+        .then(res => {
+          if (res.data.user.role === 'Admin') {
+            setAuthorized(true);
+          } else {
+            setAuthorized(false);
+          }
+          setLoading(false);
+        })
+        .catch(() => {
+          setAuthorized(false);
+          setLoading(false);
+        });
+    } else {
+      setAuthorized(false);
+      setLoading(false);
+    }
+  }, []);
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.type === 'checkbox' ? e.target.checked : e.target.value,
     });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      const bankToken = localStorage.getItem('bankToken');
       const token = localStorage.getItem('token');
-      if (!token) {
+      const authToken = bankToken || token;
+      if (!authToken) {
         alert('Authorization token not found. Please log in again.');
         return;
       }
-      axios.defaults.baseURL = 'http://localhost:4000';
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      await axios.post('/api/v3/bank/loan/create', formData);
+      // Only send required fields
+      const payload = {
+        name: formData.name,
+        description: formData.description,
+        link: formData.link,
+        amount: formData.amount,
+        eligibilityCriteria: formData.eligibilityCriteria,
+        interestRate: formData.interestRate,
+        isActive: formData.isActive,
+        avatar: formData.avatar,
+      };
+      // Debug log
+      console.log('Sending loan creation request with token:', authToken);
+      console.log('Payload:', payload);
+      await axios.post(BACKEND_URL + '/api/v3/bank/loan/create', payload, {
+        headers: { Authorization: `Bearer ${authToken}` }
+      });
       alert('Loan created successfully');
       setFormData({
         name: '',
@@ -42,11 +88,8 @@ const CreateLoan = () => {
         amount: '',
         eligibilityCriteria: '',
         interestRate: '',
-        provider: '',
         isActive: true,
         avatar: '',
-        Application_Starting: '',
-        Application_Closing: '',
       });
     } catch (error) {
       if (error.response && error.response.status === 401) {
@@ -56,6 +99,9 @@ const CreateLoan = () => {
       }
     }
   };
+
+  if (loading) return <div className="flex justify-center items-center min-h-screen">Checking authorization...</div>;
+  if (!authorized) return <div className="flex justify-center items-center min-h-screen text-red-600 font-bold text-xl">Unauthorized: Only banks or admins can create loans.</div>;
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-blue-50 via-blue-100 to-blue-200 py-8 px-2">
@@ -143,7 +189,7 @@ const CreateLoan = () => {
               type="checkbox"
               name="isActive"
               checked={formData.isActive}
-              onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
+              onChange={handleChange}
               className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
             />
             <label className="ml-2 block text-sm text-blue-900 font-semibold">Is Active</label>

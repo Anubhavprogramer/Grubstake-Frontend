@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import LoadingScreen from './LoadingScreen.jsx';
 
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000';
+
 const SignUp = () => {
   const [TermsChecked, setTermsChecked] = useState(false);
   const [formData, setFormData] = useState({
@@ -32,7 +34,7 @@ const SignUp = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await axios.post('/api/v2/user/register', {
+      const response = await axios.post(BACKEND_URL + '/api/v2/user/register', {
         username: formData.username,
         email: formData.email,
         password: formData.password,

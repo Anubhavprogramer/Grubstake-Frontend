@@ -4,9 +4,11 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000';
+
 const NavLink = ({ to, text, onClick }) => {
   return (
-    <Link to={to} onClick={onClick} className="text-blue-900 text-lg font-semibold md:p-2 font-[Kodchasan] hover:text-blue-700 transition-colors">
+    <Link to={to} onClick={onClick} className="text-white text-lg font-semibold md:p-2 font-[Kodchasan] hover:text-blue-300 hover:underline transition-colors">
       {text}
     </Link>
   );
@@ -14,7 +16,7 @@ const NavLink = ({ to, text, onClick }) => {
 
 const NavButton = ({ to, text, onClick }) => {
   return (
-    <Link to={to} onClick={onClick} className="text-white text-lg rounded-full font-semibold bg-blue-700 px-6 py-2 m-1 shadow hover:bg-blue-900 transition-all font-[Kodchasan]">
+    <Link to={to} onClick={onClick} className="text-white text-lg rounded-full font-semibold bg-blue-700 px-6 py-2 m-1 md:ml-3 shadow hover:bg-blue-900 transition-all font-[Kodchasan] focus:outline-none focus:ring-2 focus:ring-blue-300">
       {text}
     </Link>
   );
@@ -24,24 +26,29 @@ const NavElem = ({ mobileLeft }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [role, setRole] = useState("user");
   const token = localStorage.getItem("token");
+  const bankToken = localStorage.getItem("bankToken");
 
   const toggleNavbar = () => {
     setIsOpen(!isOpen);
   };
 
   useEffect(() => {
-    if (token) {
-      axios.get('/api/v2/user/me')
+    if (bankToken) {
+      setRole("Bank");
+    } else if (token) {
+      axios.get(BACKEND_URL + '/api/v2/user/me', {
+        headers: { Authorization: `Bearer ${token}` }
+      })
         .then((res) => {
-          // console.log("User role:", res.data.user.role); // Log the role for debugging
           setRole(res.data.user.role);
-          // console.log("Role:", role); // Log the role for debugging
         })
         .catch((err) => {
           console.error(err);
         });
+    } else {
+      setRole("user");
     }
-  }, [token]);
+  }, [token, bankToken]);
 
   const handleLinkClick = () => {
     if (isOpen) {
@@ -68,16 +75,19 @@ const NavElem = ({ mobileLeft }) => {
             <div className="fixed left-1/2 top-1/2 z-50 -translate-x-1/2 -translate-y-1/2 w-[90vw] max-w-xs bg-white rounded-2xl shadow-2xl flex flex-col items-center py-10 px-6 gap-6 border-2 border-blue-200 animate-fadeIn">
               <NavLink to="/" text="Home" onClick={handleLinkClick} />
               {role === "Admin" && <NavLink to="/admin" text="Admin Dashboard" onClick={handleLinkClick} />}
-              {role !== "Admin" && role === "user" && <NavLink to="/GovScol" text="GovScol" onClick={handleLinkClick} />}
-              {role !== "Admin" && role === "user" && <NavLink to="/PriScol" text="PriScol" onClick={handleLinkClick} />}
-              {role !== "Admin" && <NavLink to="/Loans" text="Loans" onClick={handleLinkClick} />}
-              {role !== "Admin" && role === "Bank" && <NavLink to="/NewLoan" text="New Loans" onClick={handleLinkClick} />}
-              {token ? (
+              {role === "user" && <NavLink to="/GovScol" text="GovScol" onClick={handleLinkClick} />}
+              {role === "user" && <NavLink to="/PriScol" text="PriScol" onClick={handleLinkClick} />}
+              <NavLink to="/Loans" text="Loans" onClick={handleLinkClick} />
+              {(role === "Bank" || role === "Admin") && <NavLink to="/NewLoan" text="New Loans" onClick={handleLinkClick} />}
+              {role === "Bank" && <NavLink to="/bank/dashboard" text="Bank Dashboard" onClick={handleLinkClick} />}
+              {(token || bankToken) ? (
                 <NavButton to="/logout" text="Logout" onClick={handleLinkClick} />
               ) : (
                 <>
                   <NavButton to="/SignUp" text="SignUp" onClick={handleLinkClick} />
                   <NavButton to="/Login" text="Login" onClick={handleLinkClick} />
+                  <NavButton to="/bank/signup" text="Bank Signup" onClick={handleLinkClick} />
+                  <NavButton to="/bank/login" text="Bank Login" onClick={handleLinkClick} />
                 </>
               )}
             </div>
@@ -88,17 +98,19 @@ const NavElem = ({ mobileLeft }) => {
       <div className="hidden md:flex justify-between">
         <NavLink to="/" text="Home" />
         {role === "Admin" && <NavLink to="/admin" text="Admin Dashboard" />}
-        {role !== "Admin" && role === "user" && <NavLink to="/GovScol" text="GovScol" />}
-        {role !== "Admin" && role === "user" && <NavLink to="/PriScol" text="PriScol" />}
-        {role !== "Admin" && <NavLink to="/Loans" text="Loans" />}
-        {role !== "Admin" && role === "Bank" && <NavLink to="/NewLoan" text="New Loans" />}
-        
-        {token ? (
+        {role === "user" && <NavLink to="/GovScol" text="GovScol" />}
+        {role === "user" && <NavLink to="/PriScol" text="PriScol" />}
+        <NavLink to="/Loans" text="Loans" />
+        {(role === "Bank" || role === "Admin") && <NavLink to="/NewLoan" text="New Loans" />}
+        {role === "Bank" && <NavLink to="/bank/dashboard" text="Bank Dashboard" />}
+        {(token || bankToken) ? (
           <NavButton to="/logout" text="Logout" />
         ) : (
           <>
             <NavButton to="/SignUp" text="SignUp" />
             <NavButton to="/Login" text="Login" />
+            <NavButton to="/bank/signup" text="Bank Signup" />
+            <NavButton to="/bank/login" text="Bank Login" />
           </>
         )}
       </div>

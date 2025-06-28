@@ -44,7 +44,7 @@ const NavElem = ({ mobileLeft }) => {
     if (bankToken) {
       setRole("Bank");
     } else if (token) {
-      axios.get(BACKEND_URL + '/api/v2/user/me', {
+      axios.get(BACKEND_URL + 'api/v2/user/me', {
         headers: { Authorization: `Bearer ${token}` }
       })
         .then((res) => {

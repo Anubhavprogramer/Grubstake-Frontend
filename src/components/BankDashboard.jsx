@@ -22,13 +22,13 @@ const BankDashboard = () => {
           return;
         }
         // Get bank details to get bank id
-        const bankRes = await axios.get(`${BACKEND_URL}/api/v3/bank/me/`, {
+        const bankRes = await axios.get(`${BACKEND_URL}api/v3/bank/me/`, {
           headers: { Authorization: `Bearer ${bankToken}` },
         });
         const bank = bankRes.data.bank;
         setBankId(bank._id);
         // Get all loans
-        const loansRes = await axios.get(`${BACKEND_URL}/api/v3/bank/loan`, {
+        const loansRes = await axios.get(`${BACKEND_URL}api/v3/bank/loan`, {
           headers: { Authorization: `Bearer ${bankToken}` },
         });
         // Only show loans created by this bank

@@ -18,11 +18,11 @@ const Logout = () => {
     const userToken = localStorage.getItem('token');
     let logoutPromise;
     if (bankToken) {
-      logoutPromise = axios.post(BACKEND_URL + '/api/v3/bank/logout', {}, {
+      logoutPromise = axios.post(BACKEND_URL + 'api/v3/bank/logout', {}, {
         headers: { Authorization: `Bearer ${bankToken}` }
       });
     } else {
-      logoutPromise = axios.post(BACKEND_URL + '/api/v2/user/logout');
+      logoutPromise = axios.post(BACKEND_URL + 'api/v2/user/logout');
     }
     logoutPromise
       .then(() => {

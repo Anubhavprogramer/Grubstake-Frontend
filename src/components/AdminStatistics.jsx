@@ -13,7 +13,7 @@ const AdminStatistics = () => {
     const fetchStats = async () => {
       setLoading(true);
       try {
-        const res = await axios.get(BACKEND_URL + '/api/v1/Admin/stats', { withCredentials: true });
+        const res = await axios.get(BACKEND_URL + 'api/v1/Admin/stats', { withCredentials: true });
         setStats(res.data.stats);
       } catch (err) {
         setError('Failed to fetch stats');

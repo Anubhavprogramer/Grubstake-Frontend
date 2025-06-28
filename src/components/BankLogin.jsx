@@ -26,7 +26,7 @@ const BankLogin = () => {
     setError('');
     try {
       const res = await axios.post(
-        `${process.env.REACT_APP_BACKEND_URL}/api/v3/bank/login`,
+        `${process.env.REACT_APP_BACKEND_URL}api/v3/bank/login`,
         form
       );
       const token = res.data.token;

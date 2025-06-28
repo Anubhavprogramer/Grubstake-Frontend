@@ -34,7 +34,7 @@ const SignUp = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await axios.post(BACKEND_URL + '/api/v2/user/register', {
+      const response = await axios.post(BACKEND_URL + 'api/v2/user/register', {
         username: formData.username,
         email: formData.email,
         password: formData.password,

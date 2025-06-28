@@ -38,7 +38,7 @@ const BankSignup = () => {
     setSuccess('');
     try {
       const res = await axios.post(
-        `${process.env.REACT_APP_BACKEND_URL}/api/v3/bank/register`,
+        `${process.env.REACT_APP_BACKEND_URL}api/v3/bank/register`,
         {
           ...form,
           assets: Number(form.assets),

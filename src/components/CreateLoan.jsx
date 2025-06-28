@@ -25,7 +25,7 @@ const CreateLoan = () => {
       setLoading(false);
     } else if (token) {
       // Check if user is admin
-      axios.get(BACKEND_URL + '/api/v2/user/me', {
+      axios.get(BACKEND_URL + 'api/v2/user/me', {
         headers: { Authorization: `Bearer ${token}` }
       })
         .then(res => {
@@ -77,7 +77,7 @@ const CreateLoan = () => {
       // Debug log
       console.log('Sending loan creation request with token:', authToken);
       console.log('Payload:', payload);
-      await axios.post(BACKEND_URL + '/api/v3/bank/loan/create', payload, {
+      await axios.post(BACKEND_URL + 'api/v3/bank/loan/create', payload, {
         headers: { Authorization: `Bearer ${authToken}` }
       });
       alert('Loan created successfully');

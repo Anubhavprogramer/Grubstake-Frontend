@@ -35,7 +35,7 @@ const AdminNewScholarship = () => {
     setError('');
     setSuccess('');
     try {
-      await axios.post(BACKEND_URL + '/api/v1/Admin/scholarships', {
+      await axios.post(BACKEND_URL + 'api/v1/Admin/scholarships', {
         ...form,
         amount: Number(form.amount)
       }, { withCredentials: true });

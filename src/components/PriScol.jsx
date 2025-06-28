@@ -9,7 +9,7 @@ const PriScol = () => {
   const [sponserData, setSponserData] = useState([]);
 
   useEffect(()=>{
-    axios.get(BACKEND_URL + '/api/v1/Schollerships')
+    axios.get(BACKEND_URL + 'api/v1/Schollerships')
     .then((res)=>{
       // console.log("Response data:", res.data);
       const scholarshipsArray = res.data.scholerships;

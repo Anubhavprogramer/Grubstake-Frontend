@@ -9,11 +9,22 @@ const Logout = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Clear the token from localStorage
+    // Remove both tokens
     localStorage.removeItem('token');
+    localStorage.removeItem('bankToken');
 
-    // Make the API call to the server to log out the user
-    axios.post(BACKEND_URL + '/api/v2/user/logout')
+    // Determine which logout endpoint to call
+    const bankToken = localStorage.getItem('bankToken');
+    const userToken = localStorage.getItem('token');
+    let logoutPromise;
+    if (bankToken) {
+      logoutPromise = axios.post(BACKEND_URL + '/api/v3/bank/logout', {}, {
+        headers: { Authorization: `Bearer ${bankToken}` }
+      });
+    } else {
+      logoutPromise = axios.post(BACKEND_URL + '/api/v2/user/logout');
+    }
+    logoutPromise
       .then(() => {
         setTimeout(() => navigate('/login'), 1000);
       })
